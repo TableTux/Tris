@@ -38,6 +38,8 @@ perde mai. Giocare qualche partita per vedere se è vero!
  */
 
 
+import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 
 public class UnDosTrisJVM
@@ -46,9 +48,10 @@ public class UnDosTrisJVM
     static final int X = 1;
     static final int O = -1;
 
+
     public static void main(String[] args)
     {
-        System.out.println("Let's play Three in a Row!");
+        System.out.println("Let's play Tic Tac Toe!");
         String userChoice = "choose";
         while (!userChoice.equalsIgnoreCase( "X") && !userChoice.equalsIgnoreCase("O"))
         {
@@ -69,19 +72,34 @@ public class UnDosTrisJVM
             numUser = X;
             numCPU = O;
         }
-        else { numUser = O; numCPU = X; }
+        else
+        {
+            numUser = O;
+            numCPU = X;
+        }
+
 
         int[][] config = Methods.createNewConfig();
         Methods.printConfigGame(config);
 
         Methods.CPUMove(config, numCPU, numUser);
-        
-        int[][] testArray = {
-                {0,0,1},
-                {0,1,0},
-                {1,0,0}
-        };
-        Methods.verifyVictory(testArray, 1, -1);
+
+        // Game Loop while user response is yes to new match
+        boolean gameFinished = false;
+
+        // Who start the game
+        int whoStart = (int) Math.random() * 1; // if 0 cpu else user
+        while(!gameFinished){
+
+            Methods.userMove(config, numUser);
+            if (Methods.verifyVictory(config, numCPU, numUser)){
+                gameFinished = true;
+            }
+            Methods.CPUMove(config, numCPU, numUser);
+            if (Methods.verifyVictory(config, numCPU, numUser)){
+                gameFinished = true;
+            }
+        }
     }
 }
 
