@@ -1,5 +1,8 @@
 public class Methods
 {
+    public static final int WIDTH = 3;
+    public static final int HEIGHT = 3;
+
     private static char convertNumToChar(int num)
     {
         switch (num)
@@ -58,7 +61,7 @@ public class Methods
     private static boolean CPUMove1(int[][] configGame, int numCPU, int numUser)
     {
         // Check vertical and horizontal
-        for (int y = 0; y < 3; y++)
+        for (int y = 0; y < HEIGHT; y++)
         {
             int numUserCase = 0;
             int emptyCase = -1;
@@ -150,7 +153,101 @@ public class Methods
     }
 
     private static boolean CPUMove2(int[][] configGame, int numCPU, int numUser)
-f    private static boolean CPUMove3(int[][] configGame, int numCPU, int numUser)
+    {
+        // Check vertical and horizontal
+        for (int y = 0; y < 3; y++)
+        {
+            int numUserCase = 0;
+            int emptyCase = -1;
+            for (int x = 0; x < 3; x++)
+            {
+                if(configGame[y][x] == numUser)
+                {
+                    numUserCase ++;
+                }
+                else if (configGame[y][x]  == 0)
+                {
+                    emptyCase = x;
+                }
+            }
+            if (numUserCase == 2 && emptyCase != -1)
+            {
+                configGame[y][emptyCase] = numCPU;
+                return true;
+            }
+        }
+        for (int x = 0; x < 3; x++)
+        {
+            int numUserCase = 0;
+            int emptyCase = -1;
+            for (int y = 0; y < 3; y++)
+            {
+                if(configGame[y][x] == numUser)
+                {
+                    numUserCase ++;
+                }
+                else if (configGame[y][x]  == 0)
+                {
+                    emptyCase = y;
+                }
+            }
+            if (numUserCase == 2 && emptyCase != -1)
+            {
+                configGame[emptyCase][x] = numCPU;
+                return true;
+            }
+        }
+        /* Verify diagonal conditions
+        x . .
+        . x .
+        . . x
+         */
+        {
+            int numUserCase = 0;
+            int emptyCase = -1;
+            for (int i = 0; i < 3; i++)
+            {
+                if (configGame[i][i] == numUserCase)
+                {
+                        numUserCase++;
+                    }
+                    if (configGame[i][i] == 0) {
+                        emptyCase = i;
+                    }
+                }
+                if (numUserCase == 2 && emptyCase != -1)
+                {
+                    configGame[emptyCase][emptyCase]= numCPU;
+                    return true;
+                }
+            }
+        /*
+        and
+        . . x
+        . x .
+        x . .
+        */
+            {
+                int numUserCase = 0;
+                int emptyCase = -1;
+                for (int i = 0; i < 3; i++) {
+                    if (configGame[i][2-i] == numUserCase) {
+                        numUserCase++;
+                    }
+                    if (configGame[i][2-i] == 0) {
+                        emptyCase = 2-i;
+                    }
+                }
+                if (numUserCase == 2 && emptyCase != -1)
+                {
+                    configGame[emptyCase][emptyCase]= numCPU;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    private static boolean CPUMove3(int[][] configGame, int numCPU, int numUser)
     {
         if(configGame[1][1] == 0)
         {
@@ -163,17 +260,152 @@ f    private static boolean CPUMove3(int[][] configGame, int numCPU, int numUser
     private static boolean CPUMove4(int[][] configGame, int numCPU, int numUser)
     {
         /*
-        if
-         */
-        if(configGame[0][0] ==0)
+        if x . .
+           . . .
+           . . .
+        then
+           x . .
+           . . .
+           . . O
+        */
+        if(configGame[0][0] == numUser)
         {
             configGame[2][2] = numCPU;
+            return true;
         }
+        /*
+        if . . x
+           . . .
+           . . .
+        then
+           . . x
+           . . .
+           O . .
+        */
+        if(configGame[0][2] == numUser)
+        {
+            configGame[2][0] = numCPU;
+            return true;
+        }
+        /*
+        if . . .
+           . . .
+           . . X
+        then
+           O . .
+           . . .
+           . . x
+        */
+        if (configGame[2][2] == numUser)
+        {
+            configGame[0][0] = numCPU;
+            return true;
+        }
+        /*
+        if . . .
+           . . .
+           x . .
+        then
+           . . O
+           . . .
+           X . .
+        */
+        else if (configGame[2][0] == numUser)
+        {
+            configGame[0][2] = numCPU;
+            return true;
+        }
+        return false;
+    }
+    private static boolean CPUMove5(int[][] configGame, int numCPU, int numUser)
+    {
+
+        /*
+        if / . .
+           . . .
+           . . .
+        then
+           / . .
+           . . .
+           . . O
+        */
+        if(configGame[0][0] == 0)
+        {
+            configGame[2][2] = numCPU;
+            return true;
+        }
+        /*
+        if . . x
+           . . .
+           . . .
+        then
+           . . x
+           . . .
+           O . .
+        */
         if(configGame[0][2] == 0)
         {
             configGame[2][0] = numCPU;
+            return true;
         }
-        if ()
+        /*
+        if . . .
+           . . .
+           . . X
+        then
+           O . .
+           . . .
+           . . x
+        */
+        if (configGame[2][2] == 0)
+        {
+            configGame[0][0] = numCPU;
+            return true;
+        }
+        /*
+        if . . .
+           . . .
+           . . .
+        then
+           . . O
+           . . .
+           . . .
+        */
+        else if (configGame[2][0] == 0)
+        {
+            configGame[0][2] = numCPU;
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean CPUMove6(int[][] configGame, int numCPU, int numUser)
+    {
+        int count = 0;
+        int positionX = - 1;
+        int positionY = - 1;
+
+        for(int y = 0; y < 3; y ++) for(int x = 0; x < 3; x ++)
+        {
+            if(configGame[y][x] == 0)
+            {
+                count ++;
+
+                if((int) ((double) count * Math.random()) == 0)
+                {
+                    positionX = x;
+                    positionY = y;
+                }
+            }
+        }
+
+        if(positionX != - 1 && positionY != - 1)
+        {
+            configGame[positionY][positionX] = numCPU;
+            return true;
+        }
+        
+        return false;
     }
 
     static void userMove(int[][] configGame, int numCPU, int numUser)
@@ -208,7 +440,7 @@ f    private static boolean CPUMove3(int[][] configGame, int numCPU, int numUser
         for (int i = 0; i < configGame.length; i++)
         {
             lDiagSum += configGame[i][i];
-            rDiagSum += configGame[i][configGame.length-1];
+            rDiagSum += configGame[i][configGame.length-i-1];
         }
         if (lDiagSum == (numCPU * 3) || rDiagSum == (numCPU * 3)){
             wiener = -1;

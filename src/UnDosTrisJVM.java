@@ -77,9 +77,9 @@ public class UnDosTrisJVM
         Methods.CPUMove(config, numCPU, numUser);
         
         int[][] testArray = {
-                {1,1,1},
-                {0,0,0},
-                {0,0,0}
+                {0,0,1},
+                {0,1,0},
+                {1,0,0}
         };
         Methods.verifyVictory(testArray, 1, -1);
     }
