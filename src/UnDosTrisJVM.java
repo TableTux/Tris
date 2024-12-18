@@ -48,9 +48,12 @@ public class UnDosTrisJVM
     static final int X = 1;
     static final int O = -1;
 
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("Let's play Tic Tac Toe!");
         String userChoice = "choose";
         while (!userChoice.equalsIgnoreCase( "X") && !userChoice.equalsIgnoreCase("O"))
@@ -65,8 +68,7 @@ public class UnDosTrisJVM
                 continue;
             }
         }
-        int numCPU ;
-        int numUser ;
+        int numCPU = 0, numUser = 0;
         if (userChoice.equalsIgnoreCase("X"))
         {
             numUser = X;
@@ -82,23 +84,29 @@ public class UnDosTrisJVM
         int[][] config = Methods.createNewConfig();
         Methods.printConfigGame(config);
 
-        Methods.CPUMove(config, numCPU, numUser);
+        //Methods.CPUMove(config, numCPU, numUser);
 
         // Game Loop while user response is yes to new match
         boolean gameFinished = false;
 
-        // Who start the game
-        int whoStart = (int) Math.random() * 1; // if 0 cpu else user
+        // Who starts the game
+        int whoStarts = (int) Math.random() * 1; // if 0 cpu else user
         while(!gameFinished){
 
             Methods.userMove(config, numUser);
             if (Methods.verifyVictory(config, numCPU, numUser)){
                 gameFinished = true;
             }
+            Methods.printConfigGame(config);
+            Thread.sleep(1000);
+            clearScreen();
+            System.out.println(">>CPU is doing their move<<");
+            Thread.sleep(1500);
             Methods.CPUMove(config, numCPU, numUser);
             if (Methods.verifyVictory(config, numCPU, numUser)){
                 gameFinished = true;
             }
+            Methods.printConfigGame(config);
         }
     }
 }

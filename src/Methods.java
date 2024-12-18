@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class Methods
 {
     public static final int SIZE =  3;
-
     public static final int EMPTY = 0;
     public static final int X = +   1;
     public static final int O = -   1;
@@ -301,7 +300,7 @@ public class Methods
            . . .
            . . O
         */
-        if(configGame[0][0] == numUser)
+        if(configGame[0][0] == numUser && configGame[2][2] == EMPTY)
         {
             configGame[2][2] = numCPU;
             return true;
@@ -315,7 +314,7 @@ public class Methods
            . . .
            O . .
         */
-        if(configGame[0][2] == numUser)
+        if(configGame[0][2] == numUser && configGame[2][0] == EMPTY)
         {
             configGame[2][0] = numCPU;
             return true;
@@ -329,7 +328,7 @@ public class Methods
            . . .
            . . x
         */
-        if (configGame[2][2] == numUser)
+        if (configGame[2][2] == numUser && configGame[0][0] == EMPTY)
         {
             configGame[0][0] = numCPU;
             return true;
@@ -343,7 +342,7 @@ public class Methods
            . . .
            X . .
         */
-        else if (configGame[2][0] == numUser)
+        else if (configGame[2][0] == numUser && configGame[0][2] == EMPTY)
         {
             configGame[0][2] = numCPU;
             return true;
@@ -448,7 +447,7 @@ public class Methods
         sc.useDelimiter("[\\s,-]+"); // Regex pattern to accept space, comma and dash as delimiter
         int row = -1, column = -1;
         while (row == -1 && column == -1) {
-            System.out.println("Write the position you want occupy [row][column]: ");
+            System.out.println("Write the position you want occupy [row][column] starting from 0 to 2: ");
             row = sc.nextInt();
             column = sc.nextInt();
             if (row < 0 || row >= 3 || column < 0 || column >= 3) {
@@ -497,6 +496,15 @@ public class Methods
             wiener = -1;
         }else if (lDiagSum == (numUser * 3) || rDiagSum == (numUser * 3)){
             wiener = 1;
+        }
+
+        // Check if noone won
+        for (int i = 0; i < configGame.length; i++){
+            for (int j = 0; j < configGame[i].length; j++){
+                if (configGame[i][j] == EMPTY){
+
+                }
+            }
         }
 
         if (wiener != 0){
