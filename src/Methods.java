@@ -499,12 +499,16 @@ public class Methods
         }
 
         // Check if noone won
-        for (int i = 0; i < configGame.length; i++){
-            for (int j = 0; j < configGame[i].length; j++){
-                if (configGame[i][j] == EMPTY){
-
+        checkParity: {
+            for (int i = 0; i < configGame.length; i++){
+                for (int j = 0; j < configGame[i].length; j++){
+                    if (configGame[i][j] == EMPTY){
+                        break checkParity;
+                    }
                 }
             }
+            System.out.println("NO ONE WON!");
+            return true;
         }
 
         if (wiener != 0){
